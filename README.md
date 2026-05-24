@@ -2,7 +2,7 @@
 
 Коротко: это фронтенд-приложение для проекта «Журнал работ на строительном объекте». Клиент реализован на React + TypeScript, собран с помощью Vite и использует Ant Design для интерфейса. API взаимодействует с backend (NestJS + Prisma), описан в OpenAPI/Swagger и расположен отдельно.
 
----
+## **Почему этот стек:** легковесный, быстрый, а Orval даёт полную типизацию с backend.
 
 ## Что внутри
 
@@ -58,4 +58,4 @@ yarn dev
   - `PUT /journal/:id` — обновить запись
   - `DELETE /journal/:id` — удалить запись
 
-- Swagger UI backend доступен по `http://localhost:3000/api` после запуска сервера — там можно посмотреть схемы и примеры запросов.
+- Backend https://github.com/Kelioz/build-Journal-api
