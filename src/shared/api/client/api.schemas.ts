@@ -6,58 +6,61 @@
  * OpenAPI spec version: 1.0
  */
 export interface CreateUserDto {
-  email: string;
-  name?: string;
+  email: string
+  name?: string
 }
 
 export interface UserResponseDto {
-  id: number;
-  email: string;
-  name?: string;
-  createdAt: string;
+  id: number
+  email: string
+  name?: string
+  createdAt: string
 }
 
-export interface UpdateUserDto { [key: string]: unknown }
+export interface UpdateUserDto {
+  [key: string]: unknown
+}
 
 export interface WorkTypeDto {
-  id: number;
-  name: string;
+  id: number
+  name: string
 }
 
 export interface CreateJournalDto {
-  date: string;
-  workTypeId: number;
-  volume: number;
-  unit: string;
-  performer: string;
-  notes?: string;
+  date: string
+  workTypeId: number
+  volume: number
+  unit: string
+  performer: string
+  notes?: string
 }
 
 export interface JournalResponseDto {
-  id: number;
-  date: string;
-  workType: WorkTypeDto;
-  volume: number;
-  unit: string;
-  performer: string;
-  notes?: string;
-  createdAt: string;
+  id: number
+  date: string
+  workType: WorkTypeDto
+  volume: number
+  unit: string
+  performer: string
+  notes?: string
+  createdAt: string
 }
 
-export interface UpdateJournalDto { [key: string]: unknown }
+export interface UpdateJournalDto {
+  [key: string]: unknown
+}
 
 export type JournalControllerFindAllParams = {
-/**
- * Start date (inclusive) in ISO format
- */
-from?: string;
-/**
- * End date (inclusive) in ISO format
- */
-to?: string;
-/**
- * Sort by date: asc or desc
- */
-sort?: string;
-};
-
+  /**
+   * Start date (inclusive) in ISO format
+   */
+  from?: string
+  /**
+   * End date (inclusive) in ISO format
+   */
+  to?: string
+  /**
+   * Sort by date: asc or desc
+   */
+  sort?: string
+}

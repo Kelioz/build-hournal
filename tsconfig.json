@@ -22,7 +22,8 @@
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "allowJs": false
+    "allowJs": false,
+    "types": ["vitest/globals"]
   },
   "include": ["src"]
 }

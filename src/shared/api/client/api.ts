@@ -13,157 +13,197 @@ import type {
   UpdateJournalDto,
   UpdateUserDto,
   UserResponseDto,
-  WorkTypeDto
-} from './api.schemas';
+  WorkTypeDto,
+} from './api.schemas'
 
-import { customInstance } from './custom-instance';
+import { customInstance } from './custom-instance'
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
-type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
-
-
-  /**
+/**
  * @summary Create user
  */
 export const usersControllerCreate = (
-    createUserDto: CreateUserDto,
- options?: SecondParameter<typeof customInstance<UserResponseDto>>,) => {
-      return customInstance<UserResponseDto>(
-      {url: `/api/users`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createUserDto
+  createUserDto: CreateUserDto,
+  options?: SecondParameter<typeof customInstance<UserResponseDto>>
+) => {
+  return customInstance<UserResponseDto>(
+    {
+      url: `/api/users`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: createUserDto,
     },
-      options);
-    }
+    options
+  )
+}
 
 /**
  * @summary Get all users
  */
 export const usersControllerGetAll = (
-
- options?: SecondParameter<typeof customInstance<UserResponseDto[]>>,) => {
-      return customInstance<UserResponseDto[]>(
-      {url: `/api/users`, method: 'GET'
-    },
-      options);
-    }
+  options?: SecondParameter<typeof customInstance<UserResponseDto[]>>
+) => {
+  return customInstance<UserResponseDto[]>(
+    { url: `/api/users`, method: 'GET' },
+    options
+  )
+}
 
 /**
  * @summary Get user by id
  */
 export const usersControllerGetOne = (
-    id: number,
- options?: SecondParameter<typeof customInstance<UserResponseDto>>,) => {
-      return customInstance<UserResponseDto>(
-      {url: `/api/users/${id}`, method: 'GET'
-    },
-      options);
-    }
+  id: number,
+  options?: SecondParameter<typeof customInstance<UserResponseDto>>
+) => {
+  return customInstance<UserResponseDto>(
+    { url: `/api/users/${id}`, method: 'GET' },
+    options
+  )
+}
 
 /**
  * @summary Update user
  */
 export const usersControllerUpdate = (
-    id: number,
-    updateUserDto: UpdateUserDto,
- options?: SecondParameter<typeof customInstance<UserResponseDto>>,) => {
-      return customInstance<UserResponseDto>(
-      {url: `/api/users/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateUserDto
+  id: number,
+  updateUserDto: UpdateUserDto,
+  options?: SecondParameter<typeof customInstance<UserResponseDto>>
+) => {
+  return customInstance<UserResponseDto>(
+    {
+      url: `/api/users/${id}`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateUserDto,
     },
-      options);
-    }
+    options
+  )
+}
 
 /**
  * @summary Delete user
  */
 export const usersControllerRemove = (
-    id: number,
- options?: SecondParameter<typeof customInstance<void>>,) => {
-      return customInstance<void>(
-      {url: `/api/users/${id}`, method: 'DELETE'
-    },
-      options);
-    }
+  id: number,
+  options?: SecondParameter<typeof customInstance<void>>
+) => {
+  return customInstance<void>(
+    { url: `/api/users/${id}`, method: 'DELETE' },
+    options
+  )
+}
 
 /**
  * @summary List available work types
  */
 export const workTypesControllerFindAll = (
-
- options?: SecondParameter<typeof customInstance<WorkTypeDto[]>>,) => {
-      return customInstance<WorkTypeDto[]>(
-      {url: `/api/work-types`, method: 'GET'
-    },
-      options);
-    }
+  options?: SecondParameter<typeof customInstance<WorkTypeDto[]>>
+) => {
+  return customInstance<WorkTypeDto[]>(
+    { url: `/api/work-types`, method: 'GET' },
+    options
+  )
+}
 
 /**
  * @summary Create journal entry
  */
 export const journalControllerCreate = (
-    createJournalDto: CreateJournalDto,
- options?: SecondParameter<typeof customInstance<JournalResponseDto>>,) => {
-      return customInstance<JournalResponseDto>(
-      {url: `/api/journal`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: createJournalDto
+  createJournalDto: CreateJournalDto,
+  options?: SecondParameter<typeof customInstance<JournalResponseDto>>
+) => {
+  return customInstance<JournalResponseDto>(
+    {
+      url: `/api/journal`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: createJournalDto,
     },
-      options);
-    }
+    options
+  )
+}
 
 /**
  * @summary List journal entries; filter by from/to (ISO date), sort=asc|desc
  */
 export const journalControllerFindAll = (
-    params?: JournalControllerFindAllParams,
- options?: SecondParameter<typeof customInstance<JournalResponseDto[]>>,) => {
-      return customInstance<JournalResponseDto[]>(
-      {url: `/api/journal`, method: 'GET',
-        params
-    },
-      options);
-    }
+  params?: JournalControllerFindAllParams,
+  options?: SecondParameter<typeof customInstance<JournalResponseDto[]>>
+) => {
+  return customInstance<JournalResponseDto[]>(
+    { url: `/api/journal`, method: 'GET', params },
+    options
+  )
+}
 
 export const journalControllerFindOne = (
-    id: number,
- options?: SecondParameter<typeof customInstance<JournalResponseDto>>,) => {
-      return customInstance<JournalResponseDto>(
-      {url: `/api/journal/${id}`, method: 'GET'
-    },
-      options);
-    }
+  id: number,
+  options?: SecondParameter<typeof customInstance<JournalResponseDto>>
+) => {
+  return customInstance<JournalResponseDto>(
+    { url: `/api/journal/${id}`, method: 'GET' },
+    options
+  )
+}
 
 export const journalControllerUpdate = (
-    id: number,
-    updateJournalDto: UpdateJournalDto,
- options?: SecondParameter<typeof customInstance<JournalResponseDto>>,) => {
-      return customInstance<JournalResponseDto>(
-      {url: `/api/journal/${id}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateJournalDto
+  id: number,
+  updateJournalDto: UpdateJournalDto,
+  options?: SecondParameter<typeof customInstance<JournalResponseDto>>
+) => {
+  return customInstance<JournalResponseDto>(
+    {
+      url: `/api/journal/${id}`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateJournalDto,
     },
-      options);
-    }
+    options
+  )
+}
 
 export const journalControllerRemove = (
-    id: number,
- options?: SecondParameter<typeof customInstance<void>>,) => {
-      return customInstance<void>(
-      {url: `/api/journal/${id}`, method: 'DELETE'
-    },
-      options);
-    }
+  id: number,
+  options?: SecondParameter<typeof customInstance<void>>
+) => {
+  return customInstance<void>(
+    { url: `/api/journal/${id}`, method: 'DELETE' },
+    options
+  )
+}
 
-export type UsersControllerCreateResult = NonNullable<Awaited<ReturnType<typeof usersControllerCreate>>>
-export type UsersControllerGetAllResult = NonNullable<Awaited<ReturnType<typeof usersControllerGetAll>>>
-export type UsersControllerGetOneResult = NonNullable<Awaited<ReturnType<typeof usersControllerGetOne>>>
-export type UsersControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof usersControllerUpdate>>>
-export type UsersControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof usersControllerRemove>>>
-export type WorkTypesControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof workTypesControllerFindAll>>>
-export type JournalControllerCreateResult = NonNullable<Awaited<ReturnType<typeof journalControllerCreate>>>
-export type JournalControllerFindAllResult = NonNullable<Awaited<ReturnType<typeof journalControllerFindAll>>>
-export type JournalControllerFindOneResult = NonNullable<Awaited<ReturnType<typeof journalControllerFindOne>>>
-export type JournalControllerUpdateResult = NonNullable<Awaited<ReturnType<typeof journalControllerUpdate>>>
-export type JournalControllerRemoveResult = NonNullable<Awaited<ReturnType<typeof journalControllerRemove>>>
+export type UsersControllerCreateResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerCreate>>
+>
+export type UsersControllerGetAllResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerGetAll>>
+>
+export type UsersControllerGetOneResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerGetOne>>
+>
+export type UsersControllerUpdateResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerUpdate>>
+>
+export type UsersControllerRemoveResult = NonNullable<
+  Awaited<ReturnType<typeof usersControllerRemove>>
+>
+export type WorkTypesControllerFindAllResult = NonNullable<
+  Awaited<ReturnType<typeof workTypesControllerFindAll>>
+>
+export type JournalControllerCreateResult = NonNullable<
+  Awaited<ReturnType<typeof journalControllerCreate>>
+>
+export type JournalControllerFindAllResult = NonNullable<
+  Awaited<ReturnType<typeof journalControllerFindAll>>
+>
+export type JournalControllerFindOneResult = NonNullable<
+  Awaited<ReturnType<typeof journalControllerFindOne>>
+>
+export type JournalControllerUpdateResult = NonNullable<
+  Awaited<ReturnType<typeof journalControllerUpdate>>
+>
+export type JournalControllerRemoveResult = NonNullable<
+  Awaited<ReturnType<typeof journalControllerRemove>>
+>

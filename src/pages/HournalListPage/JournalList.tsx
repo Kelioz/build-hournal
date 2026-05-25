@@ -1,53 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Table, Button, Space, DatePicker, Popconfirm, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  journalControllerFindAll,
-  journalControllerRemove,
-  WorkTypesControllerFindAllResult,
-  JournalControllerFindAllResult,
-} from '../shared/api/client/api'
+import type {
+  JournalControllerFindAllParams,
+  JournalResponseDto,
+} from '@/shared/api/client'
+import { JournalModel } from '@/entities/journal'
 
 const { RangePicker } = DatePicker
 
-const JournalList = () => {
-  const [data, setData] = useState<JournalControllerFindAllResult>([])
-  const [loading, setLoading] = useState(false)
+export function JournalListPage() {
+  const [params, setParams] = useState<JournalControllerFindAllParams>({
+    sort: 'desc',
+  })
+  const { data = [], isLoading } = JournalModel.Hooks.useJournalFindAll(params)
+  const removeJournal = JournalModel.Hooks.useJournalRemove()
   const navigate = useNavigate()
 
-  const fetch = async (params?: {
-    from?: string
-    to?: string
-    sort?: string
-  }) => {
-    setLoading(true)
+  const handleDelete = async (id: number) => {
     try {
-      const res = await journalControllerFindAll(params)
-      setData(res || [])
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetch({ sort: 'desc' })
-  }, [])
-
-  const onDelete = async (id: number) => {
-    try {
-      await journalControllerRemove(id)
+      await removeJournal.mutateAsync(id)
       message.success('Запись удалена')
-      fetch()
-    } catch (e) {
+    } catch {
       message.error('Ошибка при удалении')
     }
   }
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<JournalResponseDto> = [
     {
       title: 'Дата',
       dataIndex: 'date',
@@ -64,7 +45,7 @@ const JournalList = () => {
       title: 'Объём',
       dataIndex: 'volume',
       key: 'volume',
-      render: (_: any, record: any) => `${record.volume} ${record.unit}`,
+      render: (_, record) => `${record.volume} ${record.unit}`,
     },
     {
       title: 'Исполнитель',
@@ -74,14 +55,14 @@ const JournalList = () => {
     {
       title: 'Действия',
       key: 'actions',
-      render: (_: any, record: any) => (
+      render: (_, record) => (
         <Space>
           <Button type='link' onClick={() => navigate(`/edit/${record.id}`)}>
             Редактировать
           </Button>
           <Popconfirm
             title='Удалить запись?'
-            onConfirm={() => onDelete(record.id)}
+            onConfirm={() => handleDelete(record.id)}
           >
             <Button danger>Удалить</Button>
           </Popconfirm>
@@ -95,15 +76,22 @@ const JournalList = () => {
       <Space style={{ marginBottom: 16 }}>
         <RangePicker
           onChange={(dates) => {
-            if (!dates) return fetch({})
+            if (!dates) {
+              setParams({ sort: 'desc' })
+              return
+            }
             const [from, to] = dates
-            fetch({ from: from.toISOString(), to: to.toISOString() })
+            setParams({
+              from: from?.toISOString(),
+              to: to?.toISOString(),
+              sort: params.sort || 'desc',
+            })
           }}
         />
-        <Button onClick={() => fetch({ sort: 'asc' })}>
+        <Button onClick={() => setParams({ ...params, sort: 'asc' })}>
           Сортировать по дате ↑
         </Button>
-        <Button onClick={() => fetch({ sort: 'desc' })}>
+        <Button onClick={() => setParams({ ...params, sort: 'desc' })}>
           Сортировать по дате ↓
         </Button>
         <Link to='/create'>
@@ -112,12 +100,10 @@ const JournalList = () => {
       </Space>
       <Table
         rowKey='id'
-        loading={loading}
+        loading={isLoading}
         columns={columns}
         dataSource={data}
       />
     </div>
   )
 }
-
-export default JournalList

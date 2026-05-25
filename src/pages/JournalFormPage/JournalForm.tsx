@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   Button,
   Form,
@@ -10,56 +10,77 @@ import {
 } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
-import {
-  workTypesControllerFindAll,
-  journalControllerCreate,
-  journalControllerFindOne,
-  journalControllerUpdate,
-} from '../shared/api/client/api'
+import type { CreateJournalDto, UpdateJournalDto } from '@/shared/api/client'
+import { JournalModel } from '@/entities/journal'
+import { WorkTypeModel } from '@/entities/workType'
 
 const { TextArea } = Input
 
-const JournalForm = () => {
-  const [form] = Form.useForm()
-  const [workTypes, setWorkTypes] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+interface JournalFormValues {
+  date: dayjs.Dayjs
+  workTypeId: number
+  volume: number
+  unit: string
+  performer: string
+  notes?: string
+}
+
+export function JournalFormPage() {
+  const [form] = Form.useForm<JournalFormValues>()
   const { id } = useParams<{ id?: string }>()
 
-  useEffect(() => {
-    workTypesControllerFindAll().then((res) => setWorkTypes(res || []))
-    if (id) {
-      setLoading(true)
-      journalControllerFindOne(Number(id))
-        .then((r) => {
-          form.setFieldsValue({
-            ...r,
-            date: dayjs(r.date),
-            workTypeId: r.workType?.id,
-          })
-        })
-        .finally(() => setLoading(false))
-    }
-  }, [id])
+  const { data: workTypes = [], isLoading: workTypesLoading } =
+    WorkTypeModel.Hooks.useWorkTypesFindAll()
+  const { data: journalData, isLoading: journalLoading } =
+    JournalModel.Hooks.useJournalFindOne(id ? Number(id) : undefined)
+  const createJournal = JournalModel.Hooks.useJournalCreate()
+  const updateJournal = JournalModel.Hooks.useJournalUpdate()
+  const navigate = useNavigate()
 
-  const onFinish = async (values: any) => {
+  useEffect(() => {
+    if (journalData && id) {
+      form.setFieldsValue({
+        date: dayjs(journalData.date),
+        workTypeId: journalData.workType.id,
+        volume: journalData.volume,
+        unit: journalData.unit,
+        performer: journalData.performer,
+        notes: journalData.notes,
+      })
+    }
+  }, [journalData, id, form])
+
+  const onFinish = async (values: JournalFormValues) => {
     try {
       const payload = {
-        ...values,
         date: values.date.toISOString(),
+        workTypeId: values.workTypeId,
+        volume: values.volume,
+        unit: values.unit,
+        performer: values.performer,
+        notes: values.notes,
       }
+
       if (id) {
-        await journalControllerUpdate(Number(id), payload)
+        const updateData: UpdateJournalDto = payload
+        await updateJournal.mutateAsync({ id: Number(id), data: updateData })
         message.success('Запись обновлена')
       } else {
-        await journalControllerCreate(payload)
+        const createData: CreateJournalDto = payload
+        await createJournal.mutateAsync(createData)
         message.success('Запись создана')
       }
       navigate('/')
-    } catch (e) {
+    } catch {
       message.error('Ошибка при сохранении')
     }
   }
+
+  const isLoading =
+    journalLoading ||
+    workTypesLoading ||
+    createJournal.isPending ||
+    updateJournal.isPending
 
   return (
     <Form
@@ -101,12 +122,10 @@ const JournalForm = () => {
         <TextArea rows={3} />
       </Form.Item>
       <Form.Item>
-        <Button type='primary' htmlType='submit' loading={loading}>
+        <Button type='primary' htmlType='submit' loading={isLoading}>
           Сохранить
         </Button>
       </Form.Item>
     </Form>
   )
 }
-
-export default JournalForm
