@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
-import { MainLayout } from './shared/ui/layout/Layout'
-import { Router } from './app/router'
-import QueryProvider from './app/queryProvider'
+import { MainLayout } from '../shared/ui/layout/Layout'
+import { Router } from './router'
+import QueryProvider from './queryProvider'
 
 function App() {
   return (

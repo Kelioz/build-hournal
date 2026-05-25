@@ -70,7 +70,6 @@ export function JournalListPage() {
       ),
     },
   ]
-
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>

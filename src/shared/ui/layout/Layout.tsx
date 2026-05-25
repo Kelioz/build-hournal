@@ -1,10 +1,21 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import { PropsWithChildren } from 'react'
 
 const { Header, Content } = Layout
 
 export function MainLayout(props: PropsWithChildren) {
+  const location = useLocation()
+  const getSelectedKey = () => {
+    if (
+      location.pathname === '/create' ||
+      location.pathname.includes('/edit')
+    ) {
+      return '2'
+    }
+    return '1'
+  }
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
@@ -14,7 +25,7 @@ export function MainLayout(props: PropsWithChildren) {
         <Menu
           theme='dark'
           mode='horizontal'
-          defaultSelectedKeys={['1']}
+          selectedKeys={[getSelectedKey()]}
           style={{ marginLeft: 160 }}
         >
           <Menu.Item key='1'>
